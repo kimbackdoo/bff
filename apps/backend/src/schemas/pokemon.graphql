@@ -1,0 +1,96 @@
+type Query {
+    pokemons(limit: Int, offset: Int): NamedAPIResourceList
+    pokemon(id: Int!): Pokemon
+}
+
+type NamedAPIResourceList {
+    count: Int!
+    next: String
+    previous: String
+    results: [NamedAPIResource!]!
+}
+
+type NamedAPIResource {
+    name: String!
+    url: String!
+}
+
+type Pokemon {
+    id: Int!
+    name: String!
+    base_experience: Int!
+    height: Int!
+    is_default: Boolean!
+    order: Int!
+    weight: Int!
+    abilities: [PokemonAbility!]!
+    forms: [NamedAPIResource!]!
+    game_indices: [VersionGameIndex!]!
+    held_items: [PokemonHeldItem!]!
+    location_area_encounters: String!
+    moves: [PokemonMove!]!
+    past_types: [PokemonTypePast!]!
+    sprites: PokemonSprites!
+    species: NamedAPIResource!
+    stats: [PokemonStat!]!
+    types: [PokemonType!]!
+}
+
+type PokemonAbility {
+    is_hidden: Boolean!
+    slot: Int!
+    ability: NamedAPIResource!
+}
+
+type VersionGameIndex {
+    game_index: Int!
+    version: NamedAPIResource!
+}
+
+type PokemonHeldItem {
+    item: NamedAPIResource!
+    version_details: [PokemonHeldItemVersion!]!
+}
+
+type PokemonHeldItemVersion {
+    version: NamedAPIResource!
+    rarity: Int!
+}
+
+type PokemonMove {
+    move: NamedAPIResource!
+    version_group_details: [PokemonMoveVersion!]!
+}
+
+type PokemonMoveVersion {
+    move_learn_method: NamedAPIResource!
+    version_group: NamedAPIResource!
+    level_learned_at: Int!
+}
+
+type PokemonTypePast {
+    generation: NamedAPIResource!
+    types: [PokemonType!]!
+}
+
+type PokemonType {
+    slot: Int!
+    type: NamedAPIResource!
+}
+
+type PokemonSprites {
+    front_default: String!
+    front_shiny: String!
+    front_female: String!
+    front_shiny_female: String!
+    back_default: String!
+    back_shiny: String!
+    back_female: String!
+    back_shiny_female: String!
+}
+
+type PokemonStat {
+    stat: NamedAPIResource!
+    effort: Int!
+    base_stat: Int!
+}
