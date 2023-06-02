@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "generate": "gql-gen --config codegen.yml",
+        "generate": "gql-gen --config codegen.ts",
         "generate:watch": "pnpm generate --watch '**/*.graphql'",
         "compile": "pnpm generate && tsc",
         "dev": "concurrently --names 'codegen,nodemon' --prefix-colors 'black,cyan' 'pnpm generate:watch' 'nodemon src/index.ts'"
@@ -14,6 +14,8 @@
         "@graphql-tools/load-files": "^7.0.0",
         "@graphql-tools/merge": "^9.0.0",
         "@graphql-tools/schema": "^10.0.0",
+        "@graphql-tools/utils": "^10.0.0",
+        "dotenv": "^16.1.3",
         "graphql": "^16.6.0"
     },
     "devDependencies": {
