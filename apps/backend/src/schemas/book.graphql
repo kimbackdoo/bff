@@ -1,0 +1,23 @@
+type Query {
+    books(query: String!, display: Int, start: Int, sort: String): BookList
+}
+
+type BookList {
+    lastBuildDate: String
+    total: Int
+    start: Int
+    display: Int
+    items: [BookItem]
+}
+
+type BookItem {
+    title: String
+    link: String
+    image: String
+    author: String
+    discount: Int
+    publisher: String
+    pubdate: String
+    isbn: String
+    description: String
+}
