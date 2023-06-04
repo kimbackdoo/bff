@@ -15,3 +15,13 @@ export function generateResolvers() {
     const resolvers = mergeResolvers(loadedFiles)
     return resolvers
 }
+
+export function generateQueryParams(obj?: Object) {
+    if (!obj) return obj
+
+    const queryParamsEntries = Object.entries(obj).map(([key, value]) => {
+        if (!value) return [key, value]
+        return [key, encodeURIComponent(value.toString())]
+    })
+    return Object.fromEntries(queryParamsEntries)
+}
