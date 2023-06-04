@@ -3,10 +3,8 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "generate": "gql-gen --config codegen.ts",
-        "generate:watch": "pnpm generate --watch '**/*.graphql'",
-        "compile": "pnpm generate && tsc",
-        "dev": "concurrently --names 'codegen,nodemon' --prefix-colors 'black,cyan' 'pnpm generate:watch' 'nodemon src/index.ts'"
+        "compile": "tsc",
+        "dev": "nodemon src/index.ts"
     },
     "dependencies": {
         "@apollo/datasource-rest": "^6.0.0",
@@ -19,11 +17,7 @@
         "graphql": "^16.6.0"
     },
     "devDependencies": {
-        "@graphql-codegen/cli": "^4.0.0",
-        "@graphql-codegen/typescript": "^4.0.0",
-        "@graphql-codegen/typescript-resolvers": "^4.0.0",
         "@types/node": "^20.2.5",
-        "concurrently": "^8.0.1",
         "nodemon": "^2.0.22",
         "ts-node": "^10.9.1",
         "tsconfig": "workspace:*",
