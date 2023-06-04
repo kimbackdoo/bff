@@ -1,0 +1,34 @@
+type Query {
+    posts: [Post!]!
+    post(id: Int!): Post!
+    comments(id: Int!): [Comment!]!
+}
+
+type Mutation {
+    postPost(title: String!, body: String!, userId: ID!): PostMutationResponse!
+    putPost(id: Int!, title: String!, body: String!, userId: ID!): PostMutationResponse!
+    patchPost(id: Int!, title: String, body: String, userId: ID): PostMutationResponse!
+    deletePost(id: Int!): PostMutationResponse!
+}
+
+type Post {
+    userId: ID!
+    id: ID!
+    title: String!
+    body: String!
+}
+
+type Comment {
+    postId: ID!
+    id: ID!
+    name: String!
+    email: String!
+    body: String!
+}
+
+type PostMutationResponse implements MutationResponse {
+    code: String!
+    success: Boolean!
+    message: String!
+    post: Post
+}
