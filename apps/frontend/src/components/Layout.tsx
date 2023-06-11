@@ -1,4 +1,4 @@
-import { getOpenedRoutes, routes } from '@/routes/router'
+import { getShowedRoutes, routes } from '@/routes/router'
 import { css } from '@emotion/react'
 import { useEffect } from 'react'
 import { Link, Outlet, matchPath, useLocation } from 'react-router-dom'
@@ -16,7 +16,7 @@ export default function Layout() {
         <div css={wrapperCss}>
             <nav css={navCss}>
                 <ul>
-                    {getOpenedRoutes().map(({ path, title }) => (
+                    {getShowedRoutes().map(({ path, title }) => (
                         <li key={path}>
                             <Link css={linkCss} to={path}>
                                 {title}

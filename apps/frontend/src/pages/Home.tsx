@@ -1,4 +1,4 @@
-import { getOpenedRoutes } from '@/routes/router'
+import { getShowedRoutes } from '@/routes/router'
 import { css } from '@emotion/react'
 import { Link } from 'react-router-dom'
 
@@ -7,7 +7,7 @@ export default function Home() {
         <>
             <p>원하시는 메뉴로 이동해주세요.</p>
             <ul css={ulCss}>
-                {getOpenedRoutes().map(({ path, title }) => (
+                {getShowedRoutes().map(({ path, title }) => (
                     <li key={path}>
                         <Link css={linkCss} to={path}>
                             {title}
