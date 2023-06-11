@@ -3,9 +3,11 @@ import {
     InfiniteData,
     UseInfiniteQueryOptions,
     UseInfiniteQueryResult,
+    UseMutationOptions,
     UseQueryOptions,
     UseQueryResult,
     useInfiniteQuery,
+    useMutation,
     useQuery,
 } from '@tanstack/react-query'
 import request from 'graphql-request'
@@ -22,7 +24,7 @@ export function useGraphQL<TResult, TVariables>(
     const { variables } = options ?? {}
     const { data, ...rest } = useQuery({
         queryKey: [(document.definitions[0] as any).name.value, options?.variables],
-        queryFn: async () => request(ENDPOINT, document, variables ?? {}),
+        queryFn: () => request(ENDPOINT, document, variables ?? {}),
         ...options,
     })
     return { data: data!, ...rest }
@@ -35,8 +37,18 @@ export function useInfiniteGraphQL<TResult, TVariables>(
     const { variables } = options ?? {}
     const { data, ...rest } = useInfiniteQuery({
         queryKey: [(document.definitions[0] as any).name.value, variables],
-        queryFn: async ({ pageParam }) => request(ENDPOINT, document, { ...(pageParam ?? variables) }),
+        queryFn: ({ pageParam }) => request(ENDPOINT, document, { ...(pageParam ?? variables) }),
         ...options,
     })
     return { data: data!, ...rest }
+}
+
+export function useGraphQLMutation<TResult, TVariables>(
+    document: TypedDocumentNode<TResult, TVariables>,
+    options?: UseMutationOptions<TResult, unknown, TVariables>
+) {
+    return useMutation({
+        mutationFn: (variables?: TVariables) => request(ENDPOINT, document, variables ?? {}),
+        ...options,
+    })
 }
