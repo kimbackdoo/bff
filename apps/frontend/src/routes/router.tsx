@@ -9,19 +9,18 @@ import { RouteObject, RouterProvider, createBrowserRouter } from 'react-router-d
 
 type RouteType = {
     id: number
-    open: boolean
+    parentId?: number
+    show: boolean
     path: string
     index?: boolean
     title: string
     element: ReactNode
-    children?: number[]
 }
 
-// ?? 재귀 구조 줄이는 방법 찾아볼것
 export const routes: RouteType[] = [
     {
         id: 0,
-        open: true,
+        show: true,
         path: '/',
         index: true,
         title: '홈',
@@ -29,64 +28,53 @@ export const routes: RouteType[] = [
     },
     {
         id: 1,
-        open: true,
+        show: true,
         path: '/pokemons',
         title: '포켓몬 페이지',
         element: <PokemonPage />,
     },
     {
         id: 2,
-        open: true,
+        show: true,
         path: '/book-search',
         title: '책 검색 페이지',
         element: <BookSearchPage />,
     },
     {
         id: 3,
-        open: true,
+        show: true,
         path: '/posts',
         index: true,
         title: '포스트 페이지',
         element: <PostPage />,
-        children: [4],
     },
     {
         id: 4,
-        open: false,
+        parentId: 3,
+        show: false,
         path: '/posts/:id',
         title: '포스트 상세 페이지',
         element: <PostDetailPage />,
     },
 ]
 
-export function getOpenedRoutes() {
-    return routes.filter(({ open }) => open)
+export function getShowedRoutes() {
+    return Object.values(routes).filter(({ show }) => show)
 }
 
-// TODO refactoring 필요
 function createRoutes(routes: RouteType[]) {
-    const visited = new Set<number>()
+    const groupedRoutes = routes.reduce((result, route) => {
+        const { id, parentId, path, index, element } = route
 
-    return routes.reduce((result, route, idx) => {
-        const { path, index, element, children } = route
+        if (!!index) return { ...result, [id]: { path, children: [{ index, element }] } }
+        if (!parentId) return { ...result, [id]: { path, element } }
 
-        if (visited.has(idx)) return result
-        if (!index) return [...result, { path, element }]
-        if (!children?.length) return [...result, { index, element }]
+        const { path: parentPath, children } = result[parentId]
+        const nextRoute = { path: parentPath, children: [...(children ?? []), { path, element }] }
+        return { ...result, [parentId]: nextRoute }
+    }, {} as Record<number, RouteObject>)
 
-        const childrenRoute = children.map((target) => {
-            visited.add(target)
-            const { path: childrenPath, element } = routes[target]
-            const nextPath = childrenPath.replace(`${path}/`, '')
-            return { path: nextPath, element }
-        })
-
-        const nextRoute = {
-            path,
-            children: [{ index, element }, ...childrenRoute],
-        }
-        return [...result, nextRoute]
-    }, [] as RouteObject[])
+    return Object.values(groupedRoutes)
 }
 
 const router = createBrowserRouter([
